@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import TopicName from "../component/topicName.jsx";
 import Sidebar from "../component/Sidebar.jsx";
-import FinalRound from "../component/FinalRound.jsx";
+import FinalResult from "../component/FinalResult.jsx";
 function Notes() {
   const navigate = useNavigate();
   const userData = useSelector((state) => state.user.userData);
@@ -81,7 +81,6 @@ function Notes() {
             Generating Your Notes...
           </motion.div>
         )}
-
         {error && 
           <div className="my-6 text-center text-red-600 font-medium">
             {error}
@@ -109,7 +108,7 @@ function Notes() {
             <Sidebar result={result} />
           </div>
           <div className="lg:col-span-3 rounded-2xl bg-white  shadow-[0_15px_40px_rgba(0,0,0,0.5)] p-6">
-            <FinalRound result={result} />
+            <FinalResult result={result} />
           </div>
         </motion.div>
       )}
