@@ -1,5 +1,6 @@
 import React, { Children, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import MermaidSerup from "./mermaidSerup";
 const markDownComponent = {
   h1: ({ children }) => (
     <h1 className="text-2xl font-bold text-indigo-700 mt-6 mb-4 border-b pb-2">
@@ -99,6 +100,14 @@ function FinalResult({ result }) {
           </ul>
         </section>
       )}
+
+        {result.diagram?.data && <section>
+          <SectionHeader icon="📊" title="Diagram" color="cyan" />
+          <MermaidSerup  diagram={result.diagram?.data}/>
+          <p className="mt-3 text-xs text-gray-500 italic">
+            if you need this diagram for future refrence and revision, you can save it taking a screenshot
+          </p>
+          </section>}
 
       <section>
         <SectionHeader icon="❓" title="Important Questions" color="rose" />
