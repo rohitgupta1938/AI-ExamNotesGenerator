@@ -1,6 +1,7 @@
 import React, { Children, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import MermaidSerup from "./mermaidSerup";
+import RechartSetup from "./RechartSetup";
 const markDownComponent = {
   h1: ({ children }) => (
     <h1 className="text-2xl font-bold text-indigo-700 mt-6 mb-4 border-b pb-2">
@@ -101,13 +102,33 @@ function FinalResult({ result }) {
         </section>
       )}
 
-        {result.diagram?.data && <section>
+      {result.diagram?.data && (
+        <section>
           <SectionHeader icon="📊" title="Diagram" color="cyan" />
-          <MermaidSerup  diagram={result.diagram?.data}/>
+          <MermaidSerup diagram={result.diagram?.data} />
           <p className="mt-3 text-xs text-gray-500 italic">
-            if you need this diagram for future refrence and revision, you can save it taking a screenshot
+           ℹ️ if you need this diagram for future refrence and revision, you can
+            save it taking a screenshot
           </p>
-          </section>}
+        </section>
+      )}
+
+      {result.charts && result.charts.length > 0 && (
+        <section>
+          <SectionHeader icon="📈" title="Visual Charts" color="indigo" />
+          <RechartSetup charts={result.charts} />
+          <p className="mt-3 text-xs text-gray-500 italic">
+            ℹ️ If you need these charts for future reference and revision, you can
+            save them by taking a screenshot.
+          </p>
+        </section>
+      )}
+
+      {result.charts && result.charts.length === 0 && (
+        <p className="text-sm text-gray-400 italic">
+          📉 Charts are not available for this topic.
+        </p>
+      )}
 
       <section>
         <SectionHeader icon="❓" title="Important Questions" color="rose" />
@@ -126,7 +147,7 @@ function FinalResult({ result }) {
           </ul>
           <p className="font-medium mb-1 mt-4">Diagram Questions:</p>
           <ul className="list-disc text-gray-700 ml-6">
-           <li> {result.questions.diagram}</li>
+            <li> {result.questions.diagram}</li>
           </ul>
         </div>
       </section>

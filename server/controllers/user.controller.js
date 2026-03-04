@@ -12,7 +12,7 @@ export const getCurrentUser = async (req, res) => {
       });
     }
 
-    return res.status(200).json(user); // ✅ Correct
+    return res.status(200).json(user);
   } catch (err) {
     return res.status(500).json({
       message: "getCurrentUser error",
