@@ -118,7 +118,7 @@ function Feature({ icon, title, des }) {
       whileHover={{ y: -5, rotateX: 10, rotateY: -10, scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       transition={{ type: "spring", stiffness: 200, damping: 18 }}
-      className="max-w-7xl rounded-2xl px-6 py-2 bg-linear-to-br from-black/90 via-black/80 to-black/90 backdrop-blur-xl border border-white/10 text-white shadow-[0_30px_80px_rgba(0,0,0,0.7)] cursor-pointer"
+      className="max-w-7xl rounded-2xl px-6 py-5 bg-linear-to-br from-black/90 via-black/80 to-black/90 backdrop-blur-xl border border-white/10 text-white shadow-[0_30px_80px_rgba(0,0,0,0.7)] cursor-pointer"
       style={{ transformStyle: "preserve-3d" }}
     >
       <div className="relative z-10" style={{ transform: "tranlateZ(30px)" }}>

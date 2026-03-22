@@ -27,3 +27,32 @@ export const generateNotes = async (payload) => {
     console.log(err);
   }
 };
+
+export const downloadPdf = async (result) => {
+  try {
+    const response = await axios.post(
+      serverUrl + "/api/notes/generate-pdf",
+      { result },
+      { responseType: "blob", withCredentials: true }
+    );
+
+    const url = window.URL.createObjectURL(response.data);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "ExamNotesAI.pdf";
+
+    document.body.appendChild(link);   // fix
+    link.click();
+    document.body.removeChild(link);   // cleanup
+
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url); // safe revoke
+    }, 100);
+
+  } catch (error) {
+    throw new Error("PDF Download failed!");
+  }
+};
+
+

@@ -1,37 +1,70 @@
 import PDFdocument from "pdfkit";
-
 export const downloadPdf = async (req, res) => {
-  try {
-    const { result } = req.body;
-    if (!result) {
-      return res.status(400).json({ error: "No Content Provided" });
-    }
-
-    const doc = new PDFdocument({margin:50});
-    res.setHeader("Content-type","application/pdf")
-    res.setHeader("Content-Disposition",'attachment; filename="ExamNotesAI.pdf')
-
-    doc.pipe(res);
-
-    doc.frontSize(20).text("ExamNotes AI",{align:"center"})
-    doc.moveDown();
-    doc.frontSize(14).text(`Importance:${result.importance}`)
-    doc.moveDown();
-
-    doc.fontSize(16).text("Sub Topics");
-    doc.moveDown(0.5);
-    Object.entries(result.subTopics).forEach(([star,topics])=>{
-        doc.moveDown(0.5);
-        doc.fontSize(13).text(`${star} Topic:`);
-        topics.forEach((t)=>{
-            doc.fontSize(12).text(`• ${t}`)
-        });
-    });
-
-     doc.moveDown();
-    
-
-  } catch (err) {
-    
+  const { result } = req.body;
+  if (!result) {
+    return res.status(400).json({ error: "No Content Provided" });
   }
+
+  const doc = new PDFdocument({ margin: 50 });
+  res.setHeader("Content-type", "application/pdf");
+
+  res.setHeader(
+    "Content-Disposition",
+    'attachment; filename="ExamNotesAI.pdf"'
+  );
+
+  doc.pipe(res);
+
+  doc.fontSize(20).text("ExamNotes AI", { align: "center" });
+  doc.moveDown();
+  doc.fontSize(14).text(`Importance:${result.importance}`);
+  doc.moveDown();
+
+  doc.fontSize(16).text("Sub Topics");
+  doc.moveDown(0.5);
+  Object.entries(result.subTopics).forEach(([star, topics]) => {
+    doc.moveDown(0.5);
+    doc.fontSize(13).text(`${star} Topics:`);
+    topics.forEach((t) => {
+      doc.fontSize(12).text(`• ${t}`);
+    });
+  });
+
+  doc.moveDown();
+
+  //notes
+  doc.fontSize(16).text("Notes");
+  doc.moveDown(0.5);
+  doc.fontSize(12).text(result.notes.replace(/[#*]/g, ""));
+
+  doc.moveDown();
+
+  //revision Point
+  doc.fontSize(16).text("Revision Point");
+  doc.moveDown(0.5);
+  result.revisionPoints.forEach((p) => {
+    doc.fontSize(12).text(`• ${p}`);
+  });
+  doc.moveDown();
+
+  //Questions
+  doc.fontSize(16).text("Important Questions");
+  doc.moveDown(0.5);
+
+  doc.fontSize(13).text("Short Questions");
+  result.questions.short.forEach((q) => {
+    doc.fontSize(12).text(`• ${q}`);
+  });
+  doc.moveDown();
+
+  doc.fontSize(13).text("Long Questions");
+  result.questions.long.forEach((q) => {
+    doc.fontSize(12).text(`• ${q}`);
+  });
+
+  doc.moveDown(0.5);
+
+  doc.fontSize(13).text("Diagram Questions");
+  doc.fontSize(13).text(result.questions.diagram);
+  doc.end();
 };

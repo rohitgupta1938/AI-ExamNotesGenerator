@@ -2,10 +2,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './utils/connectDB.js'
 import authRouter from './routes/auth.route.js'
-import userRouter from './routes/user.router.js';
+import userRouter from './routes/user.route.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import notesRouter from './routes/generate.route.js';
+import pdfRouter from './routes/pdf.route.js'
+
 dotenv.config();
 
 
@@ -25,11 +27,12 @@ app.use(cookieParser());
 const port = process.env.PORT || 8000;
 app.get("/",(req,res)=>{
     res.send({ message: `backend is running on port ${port}` });
-
 })
 app.use("/api/auth",authRouter);
 app.use("/api/user",userRouter);
 app.use("/api/notes",notesRouter); 
+app.use("/api/notes",pdfRouter); 
+
 app.listen(port,()=>{
     connectDB();
     console.log("backend is listening on port : 8000");
