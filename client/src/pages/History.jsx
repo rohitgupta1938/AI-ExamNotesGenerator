@@ -6,12 +6,16 @@ import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import { motion } from "motion/react";
 import { GiHamburgerMenu } from "react-icons/gi";
+import FinalResult from "../component/FinalResult";
 function History() {
   const navigate = useNavigate();
   const userData = useSelector((state) => state.user.userData);
   const credits = userData ? userData.credits : "0";
   const [topics, setTopics] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeNoteId, setActiveNoteId] = useState(null);
+  const [selectedNote, setSelectedNote] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const myNotes = async () => {
@@ -28,6 +32,20 @@ function History() {
     myNotes();
   }, []);
 
+  const openNotes = async (noteId) => {
+    setLoading(true);
+    setActiveNoteId(noteId);
+    try {
+      const res = await axios.get(serverUrl + `/api/notes/${noteId}`, {
+        withCredentials: true,
+      });
+      setSelectedNote(res.data.content);
+      setLoading(false);
+    } catch (error) {
+      console.log("error : ", error);
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     if (window.innerWidth >= 1024) {
       setIsSidebarOpen(true);
@@ -85,7 +103,7 @@ function History() {
               animate={{ x: 0 }}
               exit={{ x: -320 }}
               transition={{ type: "spring", stiffness: 260, damping: 30 }}
-              className="fixed lg:static lg:rounded-3xl top-0 left-0 z-50 lg:z-auto w-72 lg:w-auto h-full lg:h-[100vh] lg:col-span-1 bg-black/90 lg:bg-black/80 backdrop-blur-xl border border-white/10 shadow-[0_20px_45px_rgba(0,0,0,0.6)] p-5 overflow-y-auto "
+              className="fixed lg:static lg:rounded-3xl top-0 left-0 z-50 lg:z-auto w-72 lg:w-auto h-full lg:h-screen lg:col-span-1 bg-black/90 lg:bg-black/80 backdrop-blur-xl border border-white/10 shadow-[0_20px_45px_rgba(0,0,0,0.6)] p-5 overflow-y-auto "
             >
               <button
                 onClick={() => setIsSidebarOpen(false)}
@@ -113,7 +131,11 @@ function History() {
                   {topics.map((t, i) => (
                     <li
                       key={i}
-                      className=" cursor-pointer rounded-xl px-3 py-2.5 bg-white/5 border border-white/10  hover:bg-white/10"
+                      onClick={() => {
+                        openNotes(t._id);
+                      }}
+                      className={`cursor-pointer rounded-xl px-3 py-2.5  border transition-all ${activeNoteId==t._id ? "bg-indigo-500/30 border-indigo-400 shadow-[0_0_0_1px_rgba(99,102,241,0.6)]" : "border-white/10 bg-white/5  hover:bg-white/10"}
+                    `}
                     >
                       <p className="text-white text-semibold">{t.topic}</p>
                       <div className="flex flex-wrap gap-2 mt-2 text-xs">
@@ -141,6 +163,22 @@ function History() {
             </motion.div>
           )}
         </AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, y: -15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="lg:col-span-3 rounded-2xl bg-white shadow-[0_15px_40px_rgba(0,0,0,0.15)] p-6 min-h-screen"
+        >
+          {loading && (
+            <p className="text-center text-gray-500 "> Loading notes...</p>
+          )}
+          {!loading && !selectedNote && (
+            <div className="h-full flex items-center justify-center text-gray-400 ">
+              Select a topic from Sidebar
+            </div>
+          )}
+          {!loading && selectedNote && <FinalResult result={selectedNote} />}
+        </motion.div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { use, useEffect, useRef } from "react";
 import mermaid from "mermaid";
 
 mermaid.initialize({
@@ -17,11 +17,20 @@ const cleanMermaidChart = (diagram) => {
   return clean;
 };
 
-const autoFixBadNodes = (diagram) => {
+const autoFixNodes = (diagram) => {
   let index = 0;
-  return diagram.replace(/\[(.*?)\]/g, (_, lable) => {
+  const used = new Map();
+  return diagram.replace(/\[(.*?)\]/g, (match, label) => {
+    const key = label.trim();
+
+    if (used.has(key)) {
+      return used.get(key);
+    }
     index++;
-    return `N${index}[${lable}]`;
+    const id = `N${index}`;
+    const node = `${id}["${key}"]`;
+    used.set(key, node);
+    return node;
   });
 };
 
@@ -37,7 +46,7 @@ function MermaidSerup({ diagram }) {
           .toString(36)
           .substring(2, 9)}`;
 
-        const safeChart = autoFixBadNodes(cleanMermaidChart(diagram));
+        const safeChart = autoFixNodes(cleanMermaidChart(diagram));
         const { svg } = await mermaid.render(uniqueId, safeChart);
         containerRef.current.innerHTML = svg;
       } catch (err) {
