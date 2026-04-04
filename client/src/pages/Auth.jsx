@@ -27,12 +27,12 @@ function Auth() {
     }
   };
   return (
-    <div className="max-h-screen bg-white text-black px-8">
+    <div className="bg-white  text-black px-8">
       <motion.header
         initial={{ opacity: 0, y: -60 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5 }}
-        className="max-w-7xl mx-auto mt-8 rounded-2xl bg-black/80 backdrop-drop-xl border border-white/10 px-8 py-6 shadow-[0_20px_45px_ragba(0,0,0,0.6)]"
+        className="mx-auto mt-8 rounded-2xl bg-black/80 backdrop-drop-xl border border-white/10 px-4 py-5 shadow-[0_20px_45px_ragba(0,0,0,0.6)]"
       >
         <h1 className="text-2xl font-bold bg-linear-to-r from-white via-gray-300 to-white bg-clip-text text-transparent">
           ExamNotes AI

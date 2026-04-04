@@ -1,18 +1,91 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+("use client");
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
+import axios from "axios";
+import { serverUrl } from "../App.jsx";
 function Pricing() {
   const navigate = useNavigate();
   const [selectedPrice, setSelectedPrice] = useState(null);
 
-  const [paying, setPaying] = useState(null);
-  const [payingAmount, setPayingAmout] = useState(null);
+  const [paying, setPaying] = useState(false);
+  const [payingAmount, setPayingAmount] = useState(null);
+
+  const loadScript = (src) => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+  useEffect(() => {
+    loadScript("https://checkout.razorpay.com/v1/checkout.js");
+  }, []);
 
   const handlePaying = async (amount) => {
     try {
-      setPayingAmout(amount);
+      setPayingAmount(amount);
       setPaying(true);
-    } catch (error) {}
+      const isLoaded = await loadScript(
+        "https://checkout.razorpay.com/v1/checkout.js"
+      );
+
+      if (!isLoaded) {
+        alert("Razorpay SDK failed to load");
+        return;
+      }
+
+      const { data } = await axios.post(
+        serverUrl + "/api/credit/order",
+        { amount },
+        { withCredentials: true }
+      );
+
+      if (!window.Razorpay) {
+        alert("Razorpay not loaded");
+        return;
+      }
+
+      const paymentObject = new window.Razorpay({
+        key: "rzp_test_SZPNoWzE4oO0Rn",
+        order_id: data.id,
+        amount: data.amount,
+        currency: "INR",
+        handler: function (response) {
+          axios
+            .post(
+              serverUrl + "/api/credit/verify",
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                amount: amount,
+              },
+              { withCredentials: true }
+            )
+            .then((res) => {
+              if (res?.data?.success) {
+                alert("Payment Successful ✅");
+              } else {
+                alert("Payment Failed ❌");
+              }
+            });
+        },
+      });
+
+      paymentObject.open();
+    } catch (error) {
+      console.log(error);
+      alert("Payment failed ❌");
+    } finally {
+      setPaying(false);
+    }
   };
   return (
     <div className="min-h-screen bg-gray-100 px-6 py-10 relative">
@@ -37,8 +110,8 @@ function Pricing() {
         <PricingCard
           title="Starter"
           price="₹99"
-          amount={100}
-          credits="50 credits"
+          amount={99}
+          credits="150 credits"
           description="Perfect for Quick Revision"
           features={[
             "Generate AI notes",
@@ -54,12 +127,12 @@ function Pricing() {
           payingAmount={payingAmount}
         />
 
-          <PricingCard
+        <PricingCard
           popular
           title="Popular"
           price="₹ 200"
           amount={200}
-          credits="250 credits"
+          credits="450 credits"
           description="Best Value For Students"
           features={[
             "All Starter Features",
@@ -78,7 +151,7 @@ function Pricing() {
           title="Pro Learner"
           price="₹500"
           amount={500}
-          credits="1000 credits"
+          credits="1500 credits"
           description="for Serious Exam Preparation "
           features={[
             "Maximum Credit Value",
@@ -93,7 +166,6 @@ function Pricing() {
           paying={paying}
           payingAmount={payingAmount}
         />
-
       </div>
     </div>
   );
@@ -114,7 +186,7 @@ function PricingCard({
   payingAmount,
 }) {
   const isSelected = selectedPrice === amount;
-  const isPayongThisCard = paying && payingAmount === amount;
+  const isPayingThisCard = paying && payingAmount === amount;
   return (
     <motion.div
       onClick={() => setSelectedPrice(amount)}
@@ -146,20 +218,20 @@ function PricingCard({
         <p className="text-sm text-indigo-600 ">{credits}</p>
       </div>
       <button
-        disabled={isPayongThisCard}
+        disabled={isPayingThisCard}
         onClick={(e) => {
           e.stopPropagation();
           onBuy(amount);
         }}
         className={`w-full mt-5 py-2 rounded-lg font-medium transition ${
-          isPayongThisCard
+          isPayingThisCard
             ? "bg-gray-300 cursor-not-allowed"
             : isSelected
             ? "bg-black text-white"
             : "bg-indigo-600 text-white hover:bg-indigo-700"
         }`}
       >
-        {isPayongThisCard ? "Redirecting..." : "Buy now"}
+        {isPayingThisCard ? "Redirecting..." : "Buy now"}
       </button>
 
       <ul className="mt-5 space-y-2 text-sm text-gray-600">

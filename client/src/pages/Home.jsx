@@ -2,16 +2,15 @@ import React from "react";
 import Navbar from "../component/Navbar.jsx";
 import { motion } from "motion/react";
 import HomeLogo from "../assets/homepage.jpg";
-import Footer from "../component/Footer.jsx";
 import { useNavigate } from "react-router";
 function Home() {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-white mx-6 text-black">
+    <div className=" bg-white mx-4 text-black">
       <Navbar />
 
       {/* top */}
-      <section className=" max-w-7xl mx-auto px-8 pt-20 grid grid-cols-1 lg:grid-cols-2 items-center gap-20">
+      <section className=" max-w-7xl mx-auto px-6 pt-20 grid grid-cols-1 lg:grid-cols-2 items-center gap-20">
         <div>
           <motion.div
             initial={{ opacity: 0, x: -60 }}
@@ -107,7 +106,6 @@ function Home() {
           des="Download high-quality study PDFs instantly, completely free."
         />
       </section>
-      <Footer />
     </div>
   );
 }

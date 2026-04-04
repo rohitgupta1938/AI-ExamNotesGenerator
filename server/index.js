@@ -7,7 +7,8 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import notesRouter from './routes/generate.route.js';
 import pdfRouter from './routes/pdf.route.js'
-
+import creditRouter from './routes/payment.route.js';
+import subscribeRoutes from "./routes/subscription.route.js";
 dotenv.config();
 
 
@@ -32,6 +33,8 @@ app.use("/api/auth",authRouter);
 app.use("/api/user",userRouter);
 app.use("/api/notes",notesRouter); 
 app.use("/api/notes",pdfRouter); 
+app.use("/api/credit",creditRouter);
+app.use("/api", subscribeRoutes);
 
 app.listen(port,()=>{
     connectDB();

@@ -31,7 +31,7 @@ function Navbar() {
       initial={{ opacity: 0, y: -15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7 }}
-      className="  mt-8 rounded-xl bg-black/80 backdrop-drop-xl border border-white/10 py-2 px-4 max-sm:mx-1 shadow-[0_25px_50px_rgba(0,0,0,0.75)]
+      className=" mt-8 rounded-xl bg-black/80 backdrop-drop-xl border border-white/10 py-2 px-4 max-sm:mx-1 shadow-[0_25px_50px_rgba(0,0,0,0.75)]
  flex items-center justify-between"
     >
       <div className="flex items-center gap-3">
