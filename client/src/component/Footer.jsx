@@ -21,8 +21,8 @@ const Footer = () => {
       setMsg("");
 
       const res = await axios.post(`${serverUrl}/api/subscribe`, {
-        email,
-      });
+        email
+      },{withCredentials: true});
 
       if (res.data.success) {
         setMsg("Subscribed successfully ✅");
