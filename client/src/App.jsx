@@ -11,7 +11,8 @@ import Notes from "./pages/Notes.jsx";
 import Pricing from "./pages/Pricing.jsx";
 import Footer from "./component/Footer.jsx";
 export const serverUrl = "https://studynotesserver.onrender.com";
-
+import axios from "axios";
+axios.defaults.withCredentials = true;
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
