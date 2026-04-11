@@ -38,7 +38,7 @@ function FinalResult({ result }) {
     return null;
   }
   return (
-    <div className="p-3 space-y-10 bg-white ">
+    <div className=" p-1 md:p-3 space-y-10 bg-white ">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <h2 className="text-3xl font-bold  bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
           Generated Notes
