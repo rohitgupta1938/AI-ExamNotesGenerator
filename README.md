@@ -35,9 +35,10 @@ AI Exam Notes Generator is a full-stack web application that helps students quic
 
 ### Other Integrations
 
-* AI APIs
+* Gemini API
 * Razorpay
 * JWT Authentication
+* Firebase Authentication
 
 ---
 
@@ -152,6 +153,222 @@ AI-ExamNotesGenerator/
 * `POST /api/credit/verify`
 * `POST /api/subscribe`
 ---
+
+## 🚀 Installation & Setup
+
+### Prerequisites
+
+Make sure the following tools are installed on your system:
+
+* Node.js (v18+ recommended)
+* npm or yarn
+* MongoDB Atlas / Local MongoDB
+* Razorpay Account
+* Gemini API Key
+
+Check versions:
+
+```bash
+node -v
+npm -v
+```
+
+---
+
+## 📥 Clone Repository
+
+```bash
+git clone https://github.com/your-username/AI-ExamNotesGenerator.git
+
+cd AI-ExamNotesGenerator
+```
+
+---
+
+## ⚙️ Backend Setup
+
+Move to server directory:
+
+```bash
+cd server
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create a `.env` file inside the `server` folder:
+
+```env
+PORT=5000
+
+MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_jwt_secret
+
+GEMINI_API_KEY=your_gemini_api_key
+
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_secret
+
+CLIENT_URL=http://localhost:5173
+```
+
+Run backend server:
+
+```bash
+npm run dev
+```
+
+Backend runs on:
+
+```bash
+http://localhost:5000
+```
+
+---
+
+## 🎨 Frontend Setup
+
+Open a new terminal and move to client directory:
+
+```bash
+cd client
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create a `.env` file inside the `client` folder:
+
+```env
+VITE_API_URL=http://localhost:5000/api
+
+VITE_RAZORPAY_KEY=your_razorpay_key
+
+VITE_FIREBASE_API_KEY=your_key
+VITE_FIREBASE_AUTH_DOMAIN=your_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+Run frontend:
+
+```bash
+npm run dev
+```
+
+Frontend runs on:
+
+```bash
+http://localhost:5173
+```
+
+---
+
+## ▶️ Running Full Project
+
+Start backend:
+
+```bash
+cd server
+npm run dev
+```
+
+Start frontend in another terminal:
+
+```bash
+cd client
+npm run dev
+```
+
+Open browser:
+
+```bash
+http://localhost:5173
+```
+
+---
+
+## 🏗️ Build For Production
+
+Frontend:
+
+```bash
+cd client
+npm run build
+```
+
+Preview production build:
+
+```bash
+npm run preview
+```
+
+---
+
+## 🔧 Available Scripts
+
+### Client
+
+```bash
+npm run dev
+```
+
+Runs Vite development server
+
+```bash
+npm run build
+```
+
+Builds production files
+
+```bash
+npm run preview
+```
+
+Preview production build
+
+```bash
+npm run lint
+```
+
+Runs ESLint
+
+---
+
+### Server
+
+```bash
+npm run dev
+```
+
+Runs backend using Nodemon
+
+---
+
+## 🌍 Deployment
+
+Frontend deployed on:
+
+https://studynotesclient.onrender.com/
+
+Suggested deployment:
+
+* Frontend → Vercel / Netlify
+* Backend → Render / Railway
+* Database → MongoDB Atlas
+
+```
+```
+
 
 ## 👨‍💻 Author
 
