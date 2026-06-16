@@ -17,7 +17,7 @@ export const generateGeminiResponse = async (prompt) => {
             },
           ],
           generationConfig: {
-            response_mime_type: "application/json", // ✅ MUST be here
+            response_mime_type: "application/json", //  MUST be here
           },
         }),
       }
@@ -30,8 +30,7 @@ export const generateGeminiResponse = async (prompt) => {
 
     const data = await response.json();
 
-    const text =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!text) {
       throw new Error("No text return from Gemini!");
